@@ -1,0 +1,89 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255; 
+
+  font-family: sans-serif;
+
+  --scrollbar-track-color: #121212;
+  --scrollbar-thumb-color: #333333;
+  --scrollbar-thumb-hover-color: #444444;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+
+    --scrollbar-track-color: #fff 
+ #333333;
+    --scrollbar-thumb-color: #666666;
+    --scrollbar-thumb-hover-color: #888888;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  z-index: 10000;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+  z-index: 10000;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 10px;
+  z-index: 10000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-color);
+}
+
+body {
+  font-family: 'Poppins', serif; /* Replace 'Inter' with your desired font */
+  font-size: 16px;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb)); 
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', serif; /* Replace 'Poppins' with your desired font */
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+  
+  input[type="number"] {
+    @apply appearance-none;
+    -moz-appearance: textfield; /* For Firefox */
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
