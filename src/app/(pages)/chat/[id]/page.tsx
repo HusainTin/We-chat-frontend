@@ -211,6 +211,10 @@ const Page: FC<Props> = ({}) => {
           setNotFound(true);
         }
       });
+      return () => {
+        console.log('destroying previous messages')
+        dispatch(setMessages([]));
+      };
   }, [id, dispatch]);
 
   // For submitting message
