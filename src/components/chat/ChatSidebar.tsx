@@ -63,53 +63,59 @@ const ChatSidebar: FC<ChatSidebarProps> = ({}) => {
   };
   return (
     <div
-      className={`flex-col w-full md:w-[380px] dark:bg-slate-800 bg-white  ${
-        id ? "md:flex hidden" : "flex "
-      } md:border-r-[0.5px] border-0 rounded-l-xl md:rounded-r-none rounded-r-lg overflow-hidden`}
+      className={`chat-sidebar-panel ${
+        id ? "md:flex hidden" : "flex"
+      }`}
     >
-      <div className="flex  bg-inherit z-10 p-0 m-0 rounded-l-xl md:rounded-r-none rounded-r-lg">
-        <div className=" flex w-full items-center h-[50px] shadow-none p-2 mt-[10px] ml-[4px] py-0.5 px-3 rounded-l-xl md:rounded-r-none rounded-r-lg">
+      {/* Header */}
+      <div className="chat-sidebar-header">
+        <h2 className="chat-sidebar-title">Chats</h2>
+        <Tooltip title="Add New Chat">
+          <IconButton
+            onClick={() => setOpen(true)}
+            className="chat-sidebar-add-btn"
+          >
+            <PersonAddIcon className="dark:text-slate-300 text-blue-600" sx={{ fontSize: 22 }} />
+          </IconButton>
+        </Tooltip>
+      </div>
+
+      {/* Search */}
+      <div className="chat-sidebar-search-wrapper">
+        <div className="chat-sidebar-search">
           <button
             type="button"
-            className="p-1 rounded-md text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800"
+            className="chat-sidebar-search-icon"
             aria-label="search"
             onClick={handleSearchIconClick}
           >
-            <SearchIcon />
+            <SearchIcon sx={{ fontSize: 20 }} />
           </button>
           <input
             type="text"
-            className="px-2 py-2 rounded-lg  focus:outline-none  w-full dark:text-slate-200 text-black bg-white dark:bg-slate-800"
-            placeholder="Search"
+            className="chat-sidebar-search-input"
+            placeholder="Search conversations..."
             ref={inputRef}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+        </div>
+      </div>
 
-          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-          <div className="flex">
-            <Tooltip title="Add New Chat">
-              <IconButton onClick={() => setOpen(true)}>
-                <PersonAddIcon className="dark:text-slate-200 text-blue-700" />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </div>
+      {/* Chat list */}
+      <div className="chat-sidebar-list">
+        <ChatList />
       </div>
-      <Divider />
-      <div className="flex">
-        <div className="w-full h-[81vh] overflow-y-auto">
-          <ChatList />
-        </div>
-      </div>
+
+      {/* Add chat modal */}
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         className="flex justify-center items-center"
       >
-        <div className="bg-white w-[400px] dark:bg-slate-800">
-          <div className="flex justify-end">
+        <div className="bg-white w-[400px] dark:bg-slate-800 rounded-2xl overflow-hidden shadow-2xl">
+          <div className="flex justify-end p-1">
             <IconButton className="text-[red] dark:text-red-400" onClick={() => setOpen(false)}>
               <CloseIcon />
             </IconButton>
@@ -147,15 +153,6 @@ const ChatSidebar: FC<ChatSidebarProps> = ({}) => {
               </Box>
             ))}
           </Box>
-          {/* <div className="float-end">
-            <button
-              type="button"
-              className="text-red-600 hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </button>
-          </div> */}
         </div>
       </Modal>
     </div>

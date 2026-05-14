@@ -7,7 +7,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Logout from "@mui/icons-material/Logout";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ChatSidebar from "@/components/chat/ChatSidebar";
+import AppSidebar from "@/components/chat/AppSidebar";
 import UserProtected from "@/components/auth/UserProtected";
 import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
@@ -160,123 +162,88 @@ const Layout: FC<LayoutProps> = ({ children }) => {
           title={title}
           description="Chat page for chatting with the loved ones"
         />
-        <div className=" bg-gradient-to-r from-blue-950 to-black dark:from-slate-950 dark:to-slate-900 min-h-screen h-full">
-          <div className="h-[60px] flex bg-inherit items-center bg-gradient-to-r from-blue-950 to-black dark:from-slate-950 dark:to-slate-900 justify-between">
-            <div className="flex items-center mx-10 my-2">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                width={50}
-                height={50}
-                className=""
-              />
-              <p className="text-[1.5rem] text-white">WeChat</p>
-            </div>
-            <div className="mx-10 flex">
-              <ThemeSwitcher/>
-              <Tooltip title="Account settings">
-                <IconButton
-                  onClick={handleClick}
-                  size="small"
-                  aria-controls={open ? "account-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={open ? "true" : undefined}
-                >
-                  <Avatar
-                    src={user?.profile_picture}
-                    sx={{
-                      backgroundColor: getColorForUsername(user?.username),
-                      width: 40,
-                      height: 40,
-                    }}
-                  >
+        <div className="chat-app-container">
+          {/* Left icon sidebar — hidden on mobile */}
+          <div className="chat-app-sidebar-wrapper">
+            <AppSidebar user={user} onProfileClick={handleClick} />
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              onClick={handleClose}
+              sx={{ width: "100%" }}
+              PaperProps={{
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 4px 12px rgba(0,0,0,0.2))",
+                  mt: -1,
+                  ml: 2,
+                  minWidth: 200,
+                  "& .MuiPaper-root": {
+                    backgroundColor: theme === "dark" ? "#1e293b" : "white",
+                    color: theme === "dark" ? "#f1f5f9" : "black",
+                    borderRadius: "1rem",
+                    width: 180,
+                  },
+                  "& .MuiMenuItem-root": {
+                    "&:hover": {
+                      backgroundColor: theme === "dark" ? "#334155" : "rgba(0, 0, 0, 0.04)",
+                    },
+                  },
+                  backgroundColor: theme === "dark" ? "#1e293b" : "white",
+                  color: theme === "dark" ? "#f1f5f9" : "black",
+                  borderRadius: "12px",
+                },
+              }}
+              transformOrigin={{ horizontal: "left", vertical: "bottom" }}
+              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+            >
+              <div className="px-4 py-3">
+                <p className="text-sm font-semibold truncate dark:text-white">
+                  {user?.first_name} {user?.last_name}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  @{user?.username}
+                </p>
+              </div>
+              <Divider sx={{ borderColor: theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }} />
+              <MenuItem onClick={navigateToProfile} sx={{ mt: 1 }}>
+                <ListItemIcon>
+                  <Avatar sx={{ width: 24, height: 24, fontSize: '1rem', backgroundColor: getColorForUsername(user?.username) }} src={user?.profile_picture}>
                     {capitalizeFirstLetter(user?.username?.charAt(0))}
                   </Avatar>
-                </IconButton>
-              </Tooltip>
-              <Menu
-                anchorEl={anchorEl}
-                id="account-menu"
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                sx={{ width: "100%" }}
-                PaperProps={{
-                  // elevation: 5,
-                  sx: {
-                    overflow: "visible",
-                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                    mt: 1.5,
-                    mr: 100,
-                    minWidth: 200,
-                    "& .MuiPaper-root": {
-                      backgroundColor: theme=="dark"?"#333":"white",
-                      color:theme=="dark"? "#fff":"black",
-                      borderRadius: "1rem",
-                      width: 180
-                    },
-                    "& .MuiMenuItem-root": {
-                      "&:hover": {
-                        backgroundColor:theme=="dark"?"#444":"default",
-                      },
-                    },
-                    "& .MuiAvatar-root": {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,  
-                    },
-                    "&::before": {
-                      bgcolor: "background.paper",
-                      transform: "translateY(-50%) rotate(45deg)",
-                      zIndex: 0,
-                    },
-                    backgroundColor: theme=="dark"?"#444":"default",
-                  },
-                }}
-                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-              >
-                <div className="px-3 py-1 w-full">
-                  <p className="font-serif text-[25px] text-blue-900 capitalize dark:text-white">
-                    {user?.first_name} {user?.last_name}
-                  </p>
-                </div>
-                <Divider />
-                <MenuItem onClick={navigateToProfile} sx={{
-                  color:theme=="dark"? "#fff":"black",
-                }}>
-                  {user?.profile_picture ? (
-                    <Avatar src={user.profile_picture} />
-                  ) : (
-                    <Avatar
-                      sx={{
-                        backgroundColor: getColorForUsername(user?.username),
-                      }}
-                    >
-                      {capitalizeFirstLetter(user?.username?.charAt(0))}
-                    </Avatar>
-                  )}{" "}
-                  My account
-                </MenuItem>
-                <MenuItem onClick={handleLogout} sx={{ color: theme=="dark"?"#ff6767":"red" }}>
-                  <ListItemIcon sx={{ color: theme=="dark"?"#ff6767":"red" }}>
-                    <Logout fontSize="small" />
-                  </ListItemIcon>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </div>
+                </ListItemIcon>
+                My account
+              </MenuItem>
+              <MenuItem onClick={handleClose}>
+                <ListItemIcon>
+                  <SettingsOutlinedIcon fontSize="small" sx={{ color: theme === "dark" ? "#cbd5e1" : "inherit" }} />
+                </ListItemIcon>
+                Settings
+              </MenuItem>
+              <Divider sx={{ borderColor: theme === "dark" ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)" }} />
+              <MenuItem onClick={handleLogout} sx={{ color: theme === "dark" ? "#ef4444" : "red", mb: 0.5 }}>
+                <ListItemIcon sx={{ color: theme === "dark" ? "#ef4444" : "red" }}>
+                  <Logout fontSize="small" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            </Menu>
           </div>
-          <div className={`bg-slate-100 rounded-xl flex h-[90vh]  mx-5`}>
+
+          {/* Chat sidebar (contacts list) */}
+          <div className="chat-contacts-wrapper">
             <ChatSidebar />
-            <div
-              className={` w-full flex-col h-[90vh] rounded-l-lg rounded-r-lg md:rounded-l-none overflow-hidden ${
-                id ? "flex" : "md:flex hidden"
-              }`}
-            >
-              {children}
-            </div>
+          </div>
+
+          {/* Main chat area */}
+          <div
+            className={`chat-main-wrapper ${
+              id ? "chat-main-visible" : "chat-main-hidden-mobile"
+            }`}
+          >
+            {children}
           </div>
         </div>
       </UserProtected>

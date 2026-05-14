@@ -11,19 +11,27 @@ export const generateMetadata = ():Metadata=>{
 const Page:FC<PageProps> = ({}) => {
   return (
     <>
-   
-    <div className='flex flex-row items-center justify-center h-full  rounded-r-lg bg-blue-950  dark:bg-slate-700'>
-      <div>
-       <Image
+    <div className='chat-empty-state'>
+      <div className='chat-empty-state-inner'>
+        <div className='chat-empty-logo-wrapper'>
+          <Image
             src="/logo.png"
             alt="logo"
-            width={500}
-            height={500}
-            />
-        <p className='text-white text-[25px]'>
-          Start Chatting with your loved ones
+            width={140}
+            height={140}
+            className="chat-empty-logo"
+          />
+        </div>
+        <h2 className='chat-empty-title'>WeChat</h2>
+        <p className='chat-empty-subtitle'>
+          Select a conversation or start a new chat
         </p>
-          </div>
+        <div className='chat-empty-decoration'>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
     </div>
     </>
   )
